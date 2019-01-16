@@ -4,7 +4,9 @@ import axios from 'axios';
 import { url } from '../../utils/url';
 import Lists from '../Lists';
 import Spinner from '../Spinner';
-import style from './style.css'
+import style from './style.css';
+
+
 
 class Home extends Component {
   constructor(props) {
@@ -12,9 +14,8 @@ class Home extends Component {
     this.state = {
       repositories: [],
       page:0,
-      laoding: false,
+      loading: false,
       loadingMore: false,
-      end: false,
       url
     }
   }
@@ -30,33 +31,26 @@ class Home extends Component {
       .then((response) => this.setState({repositories: response.data.items, loading: false}))
       .catch(error => {
         console.log(error.response)
-        if(error.response.status === 403) this.setState({end: true});
+        if(error.response.status === 403) return;
       })
   }
 
   fetchMoreData = () => {
     document.addEventListener('scroll',  (event) => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if(this.state.end === false) {
-          this.incrementPage();
-          this.setState({loadingMore: true})
-        } else
-          this.setState({loadingMore: false})
+        this.incrementPage();
+        this.setState({loadingMore: true})
         let url = `${this.state.url}&page=${this.state.page}`;
-        this.loadMore(url)
+        axios.get(url)
+          .then(({data}) => {
+            let items = [...this.state.repositories, ...data.items];
+            this.setState({repositories: items, loadingMore: false})
+          })
+          .catch(error => {
+            console.log(error)
+          });
     }
   });
-  }
-
-  loadMore = (url) => {
-    axios.get(url)
-      .then(({data}) => {
-        let items = [...this.state.repositories, ...data.items];
-        this.setState({repositories: items, loadingMore: false})
-      })
-      .catch(error => {
-        this.setState({end: true, loadingMore: false});
-      });
   }
 
   incrementPage = () => {
@@ -70,15 +64,14 @@ class Home extends Component {
 
 
   render() {
-    const { repositories, loading, loadingMore, end } = this.state;
+    const { repositories, loading, loadingMore } = this.state;
     return (
       <Fragment>
         {
           loading ? <Spinner />
           : <Lists repositories={repositories} />
         }
-        { loadingMore && <div>Loading more ....</div> }
-        { loading === false && end && <div className="end">End</div> }
+        {loadingMore && <div className="loading_more">Loading more ....</div>}
       </Fragment>
     );
   }
