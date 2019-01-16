@@ -21,7 +21,7 @@ class Home extends Component {
     this.setState({loading: true})
     axios.get(url)
       .then(({ data }) => this.setState({repositories: data.items, loading: false}))
-      .catch(error => console.log(error))
+      .catch(error => console.log(error.response.data))
   }
 
 
