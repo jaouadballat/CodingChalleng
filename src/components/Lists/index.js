@@ -1,10 +1,8 @@
 import React from 'react';
+import List from './List';
 
-const Lists = (props) => {
-  console.log(props)
-  return (
-    <div>lists</div>
-  )
-}
+const Lists = ({repositories}) => (
+  repositories.map((repo, index) => <List {...repo} key={index} />)
+);
 
 export default Lists;

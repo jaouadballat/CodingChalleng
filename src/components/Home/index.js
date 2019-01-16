@@ -28,7 +28,7 @@ class Home extends Component {
 
   render() {
     const { repositories, loading } = this.state;
-    console.log(loading)
+    console.log(repositories)
     return (
       <Fragment>
         {
