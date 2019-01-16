@@ -13,7 +13,7 @@ class Home extends Component {
     super(props);
     this.state = {
       repositories: [],
-      page:30,
+      page: 0,
       loading: false,
       loadingMore: false,
       end: false,
