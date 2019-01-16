@@ -13,9 +13,10 @@ class Home extends Component {
     super(props);
     this.state = {
       repositories: [],
-      page:0,
+      page:30,
       loading: false,
       loadingMore: false,
+      end: false,
       url
     }
   }
@@ -38,19 +39,25 @@ class Home extends Component {
   fetchMoreData = () => {
     document.addEventListener('scroll',  (event) => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        this.incrementPage();
-        this.setState({loadingMore: true})
-        let url = `${this.state.url}&page=${this.state.page}`;
-        axios.get(url)
-          .then(({data}) => {
-            let items = [...this.state.repositories, ...data.items];
-            this.setState({repositories: items, loadingMore: false})
-          })
-          .catch(error => {
-            console.log(error)
-          });
+        if(this.state.end === false) {
+          this.incrementPage();
+          this.loadMore();
+        }
     }
   });
+  }
+
+  loadMore = () => {
+    this.setState({loadingMore: true})
+    let url = `${this.state.url}&page=${this.state.page}`;
+    axios.get(url)
+      .then(({data}) => {
+        let items = [...this.state.repositories, ...data.items];
+        this.setState({repositories: items, loadingMore: false})
+      })
+      .catch(error => {
+        this.setState({end: true, loadingMore: false});
+      });
   }
 
   incrementPage = () => {
@@ -64,7 +71,7 @@ class Home extends Component {
 
 
   render() {
-    const { repositories, loading, loadingMore } = this.state;
+    const { repositories, loading, loadingMore, end } = this.state;
     return (
       <Fragment>
         {
@@ -72,6 +79,7 @@ class Home extends Component {
           : <Lists repositories={repositories} />
         }
         {loadingMore && <div className="loading_more">Loading more ....</div>}
+        {end && <div className="end">End</div>}
       </Fragment>
     );
   }
