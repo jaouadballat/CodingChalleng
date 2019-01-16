@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { url } from '../../utils/url';
 import Lists from '../Lists';
+import Spinner from '../Spinner';
 import style from './style.css'
 
 class Home extends Component {
@@ -10,7 +11,7 @@ class Home extends Component {
     super(props);
     this.state = {
       repositories: [],
-      page:400,
+      page:0,
       laoding: false,
       loadingMore: false,
       end: false,
@@ -73,11 +74,11 @@ class Home extends Component {
     return (
       <Fragment>
         {
-          loading ? <div>loading....</div>
+          loading ? <Spinner />
           : <Lists repositories={repositories} />
         }
         { loadingMore && <div>Loading more ....</div> }
-        { end && <div className="end">End</div> }
+        { loading === false && end && <div className="end">End</div> }
       </Fragment>
     );
   }
