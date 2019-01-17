@@ -29,9 +29,10 @@ class Home extends Component {
   fetchApi = (url) => {
     this.setState({loading: true})
     axios.get(url)
-      .then((response) => this.setState({repositories: response.data.items, loading: false}))
+      .then((response) => {
+        this.setState({repositories: response.data.items, loading: false})
+      })
       .catch(error => {
-        console.log(error.response)
         if(error.response.status === 403) return;
       })
   }
