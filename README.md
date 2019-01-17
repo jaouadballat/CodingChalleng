@@ -12,5 +12,5 @@ Run `npm install` to pull all app dependencies inside the root folder.
 
 ### Screenshots
 
-![Home Loading](https:loading.png)
-![Home Page](https:home.png)
+![Home Loading](https://github.com/jaouadballat/CodingChalleng/blob/master/screenshots/loading.png)
+![Home Page](https://github.com/jaouadballat/CodingChalleng/blob/master/screenshots/lists.png)
