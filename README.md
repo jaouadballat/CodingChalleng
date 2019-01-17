@@ -7,7 +7,7 @@ The task is to implement a small webapp that will list the most starred Github r
 
 After clonning this repository to your local machine
 
-Run `npm install` to pull all app dependencies inside the root folder.
+Run `npm install` to pull all app dependencies inside the root folder then run `npm start` to see the result.
 
 
 ### Screenshots
